@@ -1,6 +1,6 @@
 # 🎓 HỆ THỐNG QUẢN LÝ ĐÀO TẠO - ĐẠI HỌC CÔNG NGHIỆP HÀ NỘI (HaUI-MANAGE)
 
-Ứng dụng Desktop quản lý đào tạo (Sinh viên, Giảng viên, Môn học, Tài khoản) được xây dựng theo **Kiến trúc 3 lớp (3-Tier Architecture)** chuẩn mực, sử dụng **Java Swing**, thư viện giao diện phẳng hiện đại **FlatLaf** và kết nối cơ sở dữ liệu qua **JDBC (Hỗ trợ cả PostgreSQL Supabase Cloud & Microsoft SQL Server)**.
+Ứng dụng Desktop quản lý đào tạo (Sinh viên, Giảng viên, Môn học, Tài khoản) được xây dựng theo **Kiến trúc 3 lớp (3-Tier Architecture)** chuẩn mực, sử dụng **Java Swing**, thư viện giao diện phẳng hiện đại **FlatLaf** và kết nối cơ sở dữ liệu qua **JDBC (PostgreSQL Supabase Cloud)**.
 
 ---
 
@@ -40,8 +40,7 @@ HAUI-MANAGE/
 ├── README.md                                    # Tài liệu hướng dẫn dự án
 │
 ├── database/                                    # Script khởi tạo cơ sở dữ liệu
-│   ├── supabase_schema_and_data.sql             # Script chuẩn PostgreSQL (Dành cho Supabase Cloud)
-│   └── schema_and_data.sql                      # Script chuẩn T-SQL (Dành cho Microsoft SQL Server)
+│   └── supabase_schema_and_data.sql             # Script chuẩn PostgreSQL (Dành cho Supabase Cloud)
 │
 └── src/
     └── main/
@@ -84,7 +83,8 @@ HAUI-MANAGE/
         │   └── Main.java                        # Entry Point khởi chạy ứng dụng
         │
         └── resources/
-            └── config.properties                # File cấu hình thông số CSDL
+            ├── config.properties.example        # File mẫu cấu hình CSDL
+            └── config.properties                # File cấu hình thông số CSDL thực tế
 ```
 
 ---
@@ -94,37 +94,27 @@ HAUI-MANAGE/
 - **Ngôn ngữ:** Java (Tương thích Java 17, 21, 24 LTS).
 - **Quản lý dự án & Build Tool:** Apache Maven.
 - **Thư viện Giao diện:** [FlatLaf](https://www.formdev.com/flatlaf/) `3.4.1` (Giao diện phẳng phong cách Clean Modern, hỗ trợ Dark/Light Theme).
-- **Cơ sở dữ liệu:**
-  - **Cloud (Mặc định):** PostgreSQL trên **Supabase** (chạy online, không cần cài server local).
-  - **Local (Tùy chọn):** Microsoft SQL Server.
-- **Driver kết nối:**
-  - `org.postgresql:postgresql:42.7.2`
-  - `com.microsoft.sqlserver:mssql-jdbc:12.6.1.jre11`
+- **Cơ sở dữ liệu:** PostgreSQL trên **Supabase Cloud**.
+- **Driver kết nối:** `org.postgresql:postgresql:42.7.2`
 
 ---
 
 ## 🚀 4. Hướng Dẫn Cài Đặt & Khởi Chạy
 
-### Bước 1: Khởi tạo Cơ Sở Dữ Liệu
-#### Sử dụng Supabase (Khuyên dùng):
+### Bước 1: Khởi tạo Cơ Sở Dữ Liệu trên Supabase
 1. Đăng nhập [Supabase Dashboard](https://supabase.com/dashboard).
 2. Vào mục **SQL Editor** (`>_`).
 3. Mở file [supabase_schema_and_data.sql](database/supabase_schema_and_data.sql), copy toàn bộ và bấm **Run**.
 
-#### Sử dụng SQL Server cục bộ:
-1. Mở **SQL Server Management Studio (SSMS)**.
-2. Mở file [schema_and_data.sql](database/schema_and_data.sql) và nhấn **Execute (F5)**.
-
 ---
 
 ### Bước 2: Cấu hình thông tin kết nối
-Mở file [DatabaseConnection.java](src/main/java/com/haui/util/DatabaseConnection.java) hoặc [config.properties](src/main/resources/config.properties) để điền đúng thông tin CSDL của bạn:
+Mở file [config.properties](src/main/resources/config.properties) (hoặc tạo từ file mẫu `config.properties.example`) và điền thông số kết nối qua **Connection Pooler**:
 
-```java
-// Cấu hình Supabase PostgreSQL
-private static final String URL = "jdbc:postgresql://db.ylfekglsbjhqwtmclfui.supabase.co:5432/postgres?sslmode=require";
-private static final String USER = "postgres";
-private static final String PASSWORD = "YOUR_DATABASE_PASSWORD";
+```properties
+db.url=jdbc:postgresql://aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres?sslmode=require&connectTimeout=10
+db.user=postgres.YOUR_PROJECT_REF
+db.password=YOUR_DATABASE_PASSWORD
 ```
 
 ---

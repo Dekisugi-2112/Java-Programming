@@ -15,12 +15,6 @@
     </properties>
 
     <dependencies>
-        <!-- Driver JDBC cho Microsoft SQL Server -->
-        <dependency>
-            <groupId>com.microsoft.sqlserver</groupId>
-            <artifactId>mssql-jdbc</artifactId>
-            <version>12.6.1.jre11</version>
-        </dependency>
 
         <!-- FlatLaf: Thư viện giao diện phẳng hiện đại cho Java Swing -->
         <dependency>
